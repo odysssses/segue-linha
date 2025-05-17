@@ -22,9 +22,13 @@ LineSensor sensorD(A1, 4); // Sensor IV direito com LED no pino 4
 ///////////////////////
 
 void setup() {
-  //Este código depende de uma calibração já presente em outro código, crie um ou use o primeiro exemplo da biblioteca "autocalibralib.h"
+  /*Este código depende de uma calibração já presente em outro código, crie um ou use o primeiro exemplo da biblioteca 
+  "autocalibralib.h" (se não quiser, comente as próximas 2 linhas e descomente as debaixo, que usam valores fixos, você pode alterá-los se quiser)**/
+  
   sensorE.setThreshold(static_cast<int>(EEPROM.read(0)));
   sensorD.setThreshold(static_cast<int>(EEPROM.read(1)));
+  //sensorE.setThreshold(300);
+  //sensorD.setThreshold(300);
 }
 
 ///////////////////////
