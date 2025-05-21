@@ -4,20 +4,20 @@
 #include <EEPROM.h>
 
 
-#define M_E 9
-#define M_D 11
-#define DIR_E 8
-#define DIR_D 10
+#define motorESQUERDO 9
+#define motorDIREITO 11
+#define direcaoESQUERDO 8
+#define direcaoDIREITO 10
 
 // Criando instância dos motores
-L298NM robo(M_E, DIR_E, M_D, DIR_D);
+L298NM robo(motorESQUERDO, direcaoESQUERDO, motorDIREITO, direcaoDIREITO);
 
 int vel = 127;
 
 ///////////////////////
 
-LineSensor sensorE(A3, 3);  // Sensor IV esquerdo com LED no pino 3
-LineSensor sensorD(A1, 4); // Sensor IV direito com LED no pino 4
+LineSensor sensorE(A0, LED_BUILTIN);  // Sensor IV esquerdo
+LineSensor sensorD(A1, LED_BUILTIN); // Sensor IV direito
 
 ///////////////////////
 
@@ -25,10 +25,10 @@ void setup() {
   /*Este código depende de uma calibração já presente em outro código, crie um ou use o primeiro exemplo da biblioteca 
   "autocalibralib.h" (se não quiser, comente as próximas 2 linhas e descomente as debaixo, que usam valores fixos, você pode alterá-los se quiser)**/
   
-  sensorE.setThreshold(static_cast<int>(EEPROM.read(0)));
-  sensorD.setThreshold(static_cast<int>(EEPROM.read(1)));
-  //sensorE.setThreshold(300);
-  //sensorD.setThreshold(300);
+  //sensorE.setThreshold(static_cast<int>(EEPROM.read(0)));
+  //sensorD.setThreshold(static_cast<int>(EEPROM.read(1)));
+  sensorE.setThreshold(300);
+  sensorD.setThreshold(300);
 }
 
 ///////////////////////
@@ -37,10 +37,10 @@ void loop() {
   bool pretoESQUERDO = sensorE.isBlack();
   bool pretoDIREITO = sensorD.isBlack();
   
-  //pretoNOME: O sensor lê preto. !pretoNOME: O sensor lê branco.
-  if ((pretoESQUERDO) && (!pretoDIREITO)) { 
+  //1: preto, 0: branco
+  if (pretoESQUERDO=1 && pretoDIREITO=0) { 
     robo.turnLeft(vel); delay(200);
-  } else if ((!pretoESQUERDO) && (pretoDIREITO)) {
+  } else if (pretoESQUERDO=0 && pretoDIREITO=1) {
     robo.turnRight(vel); delay(200);
   } else {
     robo.forward(vel);
